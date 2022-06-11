@@ -3,6 +3,7 @@
 // 【PHP】オブジェクト指向で学ぶファイナルファンタジー風 CLI アプリの作成
 echo "処理の始まり\n\n";
 
+require_once('./classes/Lives.php');
 require_once('./classes/Human.php');
 require_once('./classes/Enemy.php');
 require_once('./classes/Brave.php');
