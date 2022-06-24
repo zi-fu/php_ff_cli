@@ -3,50 +3,36 @@
 // 【PHP】オブジェクト指向で学ぶファイナルファンタジー風 CLI アプリの作成
 echo "処理の始まり\n\n";
 
-require_once('./classes/Lives.php');
-require_once('./classes/Human.php');
-require_once('./classes/Enemy.php');
-require_once('./classes/Brave.php');
-require_once('./classes/BlackMage.php');
-require_once('./classes/Message.php');
-require_once('./classes/WhiteMage.php');
+require_once('./lib/Loader.php');
+require_once('./lib/Utility.php');
+
+// オートロード
+$loader = new Loader();
+// classesフォルダの中身をロード対象ディレクトリとして登録
+$loader->regDirectory(__DIR__ . '/classes');
+$loader->regDirectory(__DIR__ . '/classes/constants');
+$loader->register();
 
 // インスタンス化
 if (isset($members)) {
     $members = $array();
 }
 
-$members[] = new Brave('ティーダ');
-$members[] = new WhiteMage('ユウナ');
-$members[] = new BlackMage('ルールー');
+$members[] = Brave::getInstance(CharacterName::TIIDA);
+$members[] = new WhiteMage(CharacterName::YUNA);
+$members[] = new BlackMage(CharacterName::RULU);
 
 if (isset($enemies)) {
     $enemies = $array();
 }
-$enemies[] = new Enemy('ゴブリン', 20);
-$enemies[] = new Enemy('ボム', 25);
-$enemies[] = new Enemy('モルボル', 30);
+$enemies[] = new Enemy(EnemyName::GOBLINS, 20);
+$enemies[] = new Enemy(EnemyName::BOMB, 25);
+$enemies[] = new Enemy(EnemyName::MORBOL, 30);
 
 $turn = 1;
 $isFinishFlg = false;
 
 $messageObj = new Message;
-
-// 終了条件の判定
-function isFinish($objects)
-{
-    $deathCnt = 0;
-    foreach ($objects as $object) {
-        if ($object->getHitPoint() > 0) {
-            return false;
-        }
-        $deathCnt++;
-    }
-    // 仲間の数が死亡数（HPが０以下の数）と同じであればtrueを返す
-    if ($deathCnt === count($objects)) {
-        return true;
-    }
-}
 
 while (!$isFinishFlg) {
     echo "**** $turn ターン目 ****\n\n";
@@ -74,8 +60,6 @@ while (!$isFinishFlg) {
         $message = "♪♪♪ファンファーレ♪♪♪\n\n";
         break;
     }
-
-
     $turn++;
 }
 
